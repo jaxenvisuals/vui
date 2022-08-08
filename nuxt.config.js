@@ -12,6 +12,11 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://cdn.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -29,15 +34,24 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
-    // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/tailwindcss
+    '@nuxtjs/tailwindcss',
   ],
+
+  // Defaults options
+  tailwindcss: {
+    cssPath: '~/assets/css/tailwind.css',
+    configPath: '~/config/tailwind.js',
+    exposeConfig: false,
+    injectPosition: 0,
+    viewer: true,
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
