@@ -1,47 +1,116 @@
 <template>
-  <Tutorial />
+  <div>
+    <Tutorial />
+    <GridOverlay
+      v-touch
+      :class="[{ 'pointer-events-none': !touchable }]"
+      @cell-touched="handleCellTouched"
+    />
+  </div>
 </template>
 
 <script>
-import speech from '@google-cloud/speech'
+import GridOverlay from '@/components/GridOverlay'
 export default {
   name: 'IndexPage',
 
-  mounted() {
-    // this.initAlexa()
+  components: { GridOverlay },
+
+  data() {
+    return {
+      touchable: true,
+    }
   },
 
   methods: {
-    initAlexa() {
-      // Creates a client
-      const client = new speech.SpeechClient()
+    async handleCellTouched(e) {
+      const cell = await this.$store.dispatch('registration/getCell', e)
 
-      async function quickstart() {
-        // The path to the remote LINEAR16 file
-        const gcsUri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw'
+      const selectedElement = this.$store.state.registration.accessibles[0]
 
-        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-        const audio = {
-          uri: gcsUri,
-        }
-        const config = {
-          encoding: 'LINEAR16',
-          sampleRateHertz: 16000,
-          languageCode: 'en-US',
-        }
-        const request = {
-          audio,
-          config,
-        }
-
-        // Detects speech in the audio file
-        const [response] = await client.recognize(request)
-        const transcription = response.results
-          .map((result) => result.alternatives[0].transcript)
-          .join('\n')
-        console.log(`Transcription: ${transcription}`)
+      const gridCell = {
+        top: cell.rect.top,
+        bottom: cell.rect.bottom,
+        left: cell.rect.left,
+        right: cell.rect.right,
+        width: cell.rect.width,
+        height: cell.rect.height,
       }
-      quickstart()
+
+      const element = {
+        top: selectedElement.rect.top,
+        bottom: selectedElement.rect.bottom,
+        left: selectedElement.rect.left,
+        right: selectedElement.rect.right,
+        width: selectedElement.rect.width,
+        height: selectedElement.rect.height,
+      }
+      const isTop =
+        element.bottom < gridCell.bottom &&
+        element.bottom > gridCell.top &&
+        element.top < gridCell.top
+      const isBottom =
+        element.top > gridCell.top &&
+        element.top < gridCell.bottom &&
+        element.bottom > gridCell.bottom
+      const isLeft =
+        element.right < gridCell.right &&
+        element.right > gridCell.left &&
+        element.left < gridCell.left
+      const isRight =
+        element.left > gridCell.left &&
+        element.left < gridCell.right &&
+        element.right > gridCell.right
+      const xSideIntersects =
+        element.left < gridCell.left && element.right > gridCell.right
+      const ySideIntersects =
+        element.top < gridCell.top && element.bottom > gridCell.bottom
+      const xWithin =
+        element.top > gridCell.top && element.bottom < gridCell.bottom
+      const yWithin =
+        element.left > gridCell.left && element.right < gridCell.right
+      const isWithin =
+        element.top > gridCell.top &&
+        element.bottom < gridCell.bottom &&
+        element.left > gridCell.left &&
+        element.right < gridCell.right
+
+      const isTopLeft = isTop && isLeft
+      const isTopRight = isTop && isRight
+      const isBottomLeft = isBottom && isLeft
+      const isBottomRight = isBottom && isRight
+      const isTopIntersects = isTop && xSideIntersects
+      const isBottomIntersects = isBottom && xSideIntersects
+      const isLeftIntersects = isLeft && ySideIntersects
+      const isRightIntersects = isRight && ySideIntersects
+      const isTopWithin = isTop && yWithin
+      const isBottomWithin = isBottom && yWithin
+      const isLeftWithin = isLeft && xWithin
+      const isRightWithin = isRight && xWithin
+      const isTopBottomWithin = yWithin && ySideIntersects
+      const isLeftRightWithin = xWithin && xSideIntersects
+      const isAround = ySideIntersects && xSideIntersects
+
+      const rulesArray = [
+        isWithin,
+        isTopWithin,
+        isBottomWithin,
+        isLeftWithin,
+        isRightWithin,
+        isTopIntersects,
+        isBottomIntersects,
+        isLeftIntersects,
+        isRightIntersects,
+        isTopLeft,
+        isTopRight,
+        isBottomLeft,
+        isBottomRight,
+        isTopBottomWithin,
+        isLeftRightWithin,
+        isAround,
+      ]
+
+      console.log('Is Valid:', rulesArray.includes(true))
     },
   },
 }
