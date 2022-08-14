@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt & npm run watch-css",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -11,7 +11,8 @@
     "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --ignore-path .gitignore",
     "lint:prettier": "prettier --check .",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
-    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix && npm run lint:style -- --fix"
+    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix && npm run lint:style -- --fix",
+    "watch-css": "npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/tailwind-styles.css --watch"
   },
   "dependencies": {
     "@google-cloud/speech": "^4.10.2",
@@ -40,6 +41,7 @@
     "stylelint": "^14.1.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended-vue": "^1.1.0",
-    "stylelint-config-standard": "^24.0.0"
+    "stylelint-config-standard": "^24.0.0",
+    "tailwindcss": "^3.1.8"
   }
 }

@@ -1,15 +1,10 @@
 export const state = () => ({
   cells: [],
-  accessibles: [],
 })
 
 export const mutations = {
   setCellBound(state, payload) {
     state.cells.push(payload)
-  },
-
-  setAccessibleElement(state, payload) {
-    state.accessibles.push(payload)
   },
 }
 

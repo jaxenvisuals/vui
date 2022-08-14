@@ -11,7 +11,13 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -38,15 +44,6 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
-
-  // Defaults options
-  tailwindcss: {
-    cssPath: '~/assets/css/tailwind.css',
-    configPath: '~/config/tailwind.js',
-    exposeConfig: false,
-    injectPosition: 0,
-    viewer: true,
-  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

@@ -6,7 +6,7 @@ Vue.directive('touch', {
     const id = uuidv4()
 
     // set the ID of the element
-    el.id += ' ' + id
+    el.setAttribute('data-touch-id', id)
     const rect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))
     // register component details
     const store = vnode.context.$store
@@ -14,6 +14,5 @@ Vue.directive('touch', {
       id,
       rect,
     })
-    console.log(el, vnode)
   },
 })

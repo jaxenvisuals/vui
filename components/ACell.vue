@@ -41,7 +41,7 @@ export default {
   watch: {
     boundingClient(val) {
       if (val) {
-        this.$store.commit('registration/setCellBound', {
+        this.$store.commit('grid/setCellBound', {
           rect: this.boundingClient,
           id: this.id,
           index: this.index,
